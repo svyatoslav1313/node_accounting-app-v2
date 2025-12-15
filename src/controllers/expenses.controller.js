@@ -38,7 +38,13 @@ const getOne = (req, res) => {
 const create = (req, res) => {
   const { userId, spentAt, title, amount, category, note } = req.body;
 
-  if (!title || !userServices.getOne(userId)) {
+  if (
+    !title ||
+    !spentAt ||
+    !amount ||
+    !category ||
+    !userServices.getOne(userId)
+  ) {
     res.sendStatus(400);
 
     return;
