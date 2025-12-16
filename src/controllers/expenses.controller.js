@@ -43,7 +43,7 @@ const create = (req, res) => {
     !spentAt ||
     !amount ||
     !category ||
-    !userServices.getOne(userId)
+    !userServices.getOne(+userId)
   ) {
     res.sendStatus(400);
 
@@ -65,7 +65,7 @@ const create = (req, res) => {
 
 const update = (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
+  const { title, spentAt, amount, category, note } = req.body;
 
   if (!expensesServices.getOne(+id)) {
     res.sendStatus(404);
@@ -73,16 +73,37 @@ const update = (req, res) => {
     return;
   }
 
-  if (!title) {
+  const payload = {
+    id: +id,
+  };
+
+  if (title) {
+    payload.title = title;
+  }
+
+  if (spentAt) {
+    payload.spentAt = spentAt;
+  }
+
+  if (amount) {
+    payload.amount = amount;
+  }
+
+  if (category) {
+    payload.category = category;
+  }
+
+  if (note) {
+    payload.note = note;
+  }
+
+  if (Object.keys(payload).length === 1) {
     res.sendStatus(400);
 
     return;
   }
 
-  const updatedExpense = expensesServices.update({
-    id: +id,
-    title,
-  });
+  const updatedExpense = expensesServices.update(payload);
 
   res.send(updatedExpense);
 };

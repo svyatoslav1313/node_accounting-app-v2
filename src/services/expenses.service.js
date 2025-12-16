@@ -67,10 +67,10 @@ const create = ({ userId, spentAt, title, amount, category, note }) => {
   return newExpense;
 };
 
-const update = ({ id, title }) => {
+const update = ({ id, ...updates }) => {
   const expense = expenses.find((e) => e.id === id);
 
-  Object.assign(expense, { title });
+  Object.assign(expense, updates);
 
   return expense;
 };
